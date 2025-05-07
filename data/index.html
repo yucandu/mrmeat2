@@ -1,0 +1,34 @@
+<!-- Complete project details: https://randomnerdtutorials.com/esp32-plot-readings-charts-multiple/ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Meat Thermometer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+  </head>
+  <body>
+    <div class="topnav">
+      <h1>Meat Thermometer</h1>
+    </div>
+    <div class="content">
+	<div id="temperature-display">
+  <h2>Temperature Sensors</h2>
+  <p>Temp 1: <span id="sensor1">--</span>&deg;F</p>
+  <p>Temp 2: <span id="sensor2">--</span>&deg;F</p>
+  <p>Set Temp: <span id="sensor3">--</span>&deg;F</p>
+  <p>ETA to Set Temp: <span id="sensor4">--</span>mins</p>
+  <!-- Add more sensor lines if needed -->
+</div>
+      <div class="card-grid">
+        <div class="card">
+          <p class="card-title">Temperature Chart</p>
+          <div id="chart-temperature" class="chart-container"></div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
