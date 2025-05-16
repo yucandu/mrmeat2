@@ -54,6 +54,12 @@ char auth[] = "DU_j5IxaBQ3Dp-joTLtsB0DM70UZaEDd";
 CRGB leds[NUM_LEDS];
 bool speakeron = false;
 
+void waitForButtonsReleased() {
+  while (!digitalRead(button1) || !digitalRead(button2)) {
+    delay(10); // debounce delay
+  }
+}
+
 
 float estimateBatteryTime(float voltage) {
   // Voltage and corresponding remaining time (in minutes)
@@ -357,10 +363,12 @@ void drawTemps() { //main screen
   every(100){ //check buttons only every 100ms for debouncing purposes, may introduce lag?
     if (!digitalRead(button1) && !digitalRead(button2)) { //if both are pressed at the same time
       settingspage = true;  //go to settings page 
+      waitForButtonsReleased(); // <-- Add this line
     }
     else if (!digitalRead(button1)) {settemp--;}
     else if (!digitalRead(button2)) {settemp++;}
   }
+  // ...existing code...
   
   img.fillSprite(cmap[setBGC]); //fill the screen with the background colour
   img.setCursor(0,0);
@@ -587,7 +595,7 @@ void drawSettings() {  //if we're in settings mode
 
   img.println(">Test Spk<");
 
-  if (setSelection == 8) {img.setTextColor(TFT_BLACK, TFT_WHITE, true); if (b1pressed) {savePrefs(); b1pressed = false;}} else {img.setTextColor(TFT_WHITE);}
+  if (setSelection == 8) {img.setTextColor(TFT_BLACK, TFT_WHITE, true); if (b1pressed) {savePrefs(); b1pressed = false; waitForButtonsReleased();}} else {img.setTextColor(TFT_WHITE);}
   img.println(">Save<");
 
 
