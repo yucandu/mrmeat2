@@ -62,15 +62,20 @@ void waitForButtonsReleased() {
 
 
 float estimateBatteryTime(float voltage) {
-  // Voltage and corresponding remaining time (in minutes)
-  const int numPoints = 13;
-  float voltages[numPoints] = {4.20, 4.10, 4.00, 3.95, 3.90, 3.85, 3.80, 3.75, 3.70, 3.60, 3.40, 3.30, 3.20};
-  float times[numPoints] =    {1080, 1040, 1005,  920,  835,  760,  694,  635,  576,  420,  150,   60,   15};
-
-
+  const int numPoints = 22;
+  float voltages[numPoints] = {
+    3.9735, 3.9558, 3.9230, 3.8958, 3.8647, 3.8223, 3.7902, 3.7655, 3.7163,
+    3.6793, 3.6387, 3.5762, 3.5502, 3.5107, 3.4837, 3.4598, 3.4235, 3.3932,
+    3.3355, 3.2773, 3.2123, 3.0920
+  };
+  float times[numPoints] = {
+    831, 791, 751, 701, 671, 631, 591, 561, 501,
+    471, 431, 391, 351, 311, 261, 241, 191, 151,
+    111,  71,  31,   0
+  };
 
   if (voltage >= voltages[0]) return times[0];
-  if (voltage <= voltages[numPoints - 1]) return times[numPoints - 1];
+  if (voltage <= voltages[numPoints - 1]) return 0;
 
   for (int i = 0; i < numPoints - 1; i++) {
     if (voltage <= voltages[i] && voltage > voltages[i + 1]) {
@@ -78,12 +83,13 @@ float estimateBatteryTime(float voltage) {
       float v2 = voltages[i + 1];
       float t1 = times[i];
       float t2 = times[i + 1];
-      return t1 + (voltage - v1) * (t2 - t1) / (v2 - v1);  // Linear interpolation
+      return t1 + (voltage - v1) * (t2 - t1) / (v2 - v1);
     }
   }
 
   return 0; // fallback
 }
+
 
 
 int8_t PROGMEM TwinkleTwinkle[] = {
@@ -458,7 +464,7 @@ void drawTemps() { //main screen
 
   img.fillRect(animpos, 232, 4, 4, cmap[setFGC]); //draw our little status indicator
   animpos += 1; //make it fly
-  if (animpos > 160) {animpos = 120;} //make it wrap around
+  if (animpos > 160) {animpos = 130;} //make it wrap around
 
   img.pushSprite(0, 0);  //and DRAW THAT MOTHERFUCKER
 }
@@ -727,7 +733,7 @@ if (setVolume > 0) {digitalWrite(MUTE_PIN, HIGH);}
 }
 
 void setup() {  //do this on bootup
-setCpuFrequencyMhz(80);
+//setCpuFrequencyMhz(160);
   Serial.begin(115200);
   Serial.println("Hello!");
   initializeCmap();  //do the color map thing
